@@ -249,7 +249,7 @@ st.caption("**MIC is the lowest concentration of a chemical that prevents visibl
 
 
 # adding subtitle
-st.header("How do the aggregated results fare for each Genus?")
+st.header("How do the aggregated results fare in each Genus?")
 st.subheader("_Penicillin_ is most effective against :green[positive] Gram Staining Streptococcus and other genera.")
 
 pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
