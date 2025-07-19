@@ -163,7 +163,7 @@ neg_df = df_long[df_long['Gram_Staining'] == 'negative']
 # Adding active title
 st.title("Antibiotic Effectiveness in Bacteria")
 # adding subtitle
-st.subheader("Penicillin works best with :green[positive] *Gram Staining bacteria, while Neomycin are more effective against :orange[negative] Gram Staining bacteria.")
+st.subheader("_Penicillin_ works best with :green[positive] *Gram Staining bacteria, while Neomycin are more effective against :orange[negative] Gram Staining bacteria.")
 
 # Define a shared color scale
 color_scale = alt.Scale(domain=['negative','positive', ], range=["#ff9f0eff","#1fb47b"])
