@@ -175,7 +175,7 @@ boxplot = alt.Chart(df_long).mark_boxplot().encode(
     y=alt.Y('log(Minimum Inhibitory Concentration (MIC))', title='**log(Minimum Inhibitory Concentration (MIC))'),
     color=alt.Color('Gram_Staining:N', scale=color_scale),
     column=alt.Column('Gram_Staining:N', title='Gram Staining')
-).properties(width=300)
+).properties(width=250)
 
 
 
@@ -269,7 +269,7 @@ neg_boxplot = alt.Chart(neg_df).mark_boxplot().encode(
     y=alt.Y('log(Minimum Inhibitory Concentration (MIC))'),
     color=alt.Color('Gram_Staining:N', scale=color_scale),
     column=alt.Column('Genus:N', title='Genus')
-).properties(width=300)
+).properties(width=250)
 
 st.altair_chart(neg_boxplot)
 
