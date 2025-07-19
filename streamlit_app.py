@@ -163,17 +163,21 @@ neg_df = df_long[df_long['Gram_Staining'] == 'negative']
 # Adding active title
 st.title("Antibiotic Effectiveness in Bacteria")
 # adding subtitle
-st.subheader("Penicillin works best with :green[positive] Gram Staining bacteria, while Neomycin are more effective against :orange[negative] Gram Staining bacteria.")
+st.subheader("Penicillin works best with :green[positive] *Gram Staining bacteria, while Neomycin are more effective against :orange[negative] Gram Staining bacteria.")
 
 # Define a shared color scale
 color_scale = alt.Scale(domain=['negative','positive', ], range=["#ff9f0eff","#1fb47b"])
+
+
 # Creating boxplot before faceting 
 boxplot = alt.Chart(df_long).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
-    y=alt.Y('log(Minimum Inhibitory Concentration (MIC))'),
+    y=alt.Y('log(Minimum Inhibitory Concentration (MIC))', title='**log(Minimum Inhibitory Concentration (MIC))'),
     color=alt.Color('Gram_Staining:N', scale=color_scale),
     column=alt.Column('Gram_Staining:N', title='Gram Staining')
 ).properties(width=300)
+
+
 
 # # Creating annotations for boxplot
 # # creating dataframe for annotations
@@ -238,13 +242,19 @@ boxplot = alt.Chart(df_long).mark_boxplot().encode(
 #     column=alt.Column('Gram_Staining:N', title='Gram Staining'))
 
 st.altair_chart(boxplot)
+
+# Adding captions
+st.caption("*Gram staining is a procedure performed to classify bacteria based on their cell wall characteristics")
+st.caption("**MIC is the lowest concentration of a chemical that prevents visible in vitro growth of bacteria. Lower values imply higher antibiotic effectiveness")
+
+
 # adding subtitle
 st.header("How do the aggregated results fare for each Genus?")
 st.subheader("_Penicillin_ is most effective against :green[positive] Gram Staining Streptococcus and other genera.")
 
 pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
-    y=alt.Y('log(Minimum Inhibitory Concentration (MIC))'),
+    y=alt.Y('log(Minimum Inhibitory Concentration (MIC))', title= "log(Minimum Inhibitory Concentration (MIC))"),
     color=alt.Color('Gram_Staining:N', scale=color_scale),
     column=alt.Column('Genus:N')
 ).properties(width=300)
