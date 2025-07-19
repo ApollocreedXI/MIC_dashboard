@@ -257,7 +257,7 @@ pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
     y=alt.Y('log(Minimum Inhibitory Concentration (MIC))', title= "log(Minimum Inhibitory Concentration (MIC))"),
     color=alt.Color('Gram_Staining:N', scale=color_scale),
     column=alt.Column('Genus:N')
-).properties(width=300)
+).properties(width=250)
 
 # Creating boxplots for each Genus
 st.altair_chart(pos_boxplot)
