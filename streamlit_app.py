@@ -163,51 +163,84 @@ neg_df = df_long[df_long['Gram_Staining'] == 'negative']
 # Adding active title
 st.title("Antibiotic Effectiveness in Bacteria")
 # adding subtitle
-st.subheader("Penicillin works best with positive Gram Staining bacteria, while Neomycin are more effective against negative Gram Staining bacteria.")
+st.subheader("Penicillin works best with :green[positive] Gram Staining bacteria, while Neomycin are more effective against :orange[negative] Gram Staining bacteria.")
 
 # Define a shared color scale
-color_scale = alt.Scale(domain=['negative','positive', ], range=["#ff8f0eff","#1fb47b"])
+color_scale = alt.Scale(domain=['negative','positive', ], range=["#ff9f0eff","#1fb47b"])
 # Creating boxplot before faceting 
-boxplot_base = alt.Chart(df_long).mark_boxplot().encode(
+boxplot = alt.Chart(df_long).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
     y=alt.Y('log(Minimum Inhibitory Concentration (MIC))'),
     color=alt.Color('Gram_Staining:N', scale=color_scale),
-    #column=alt.Column('Gram_Staining:N', title='Gram Staining')
+    column=alt.Column('Gram_Staining:N', title='Gram Staining')
 ).properties(width=300)
 
-# Creating annotations for boxplot
-# creating dataframe for annotations
-annotations = [
-    ('negative','Penicillin', np.median(df_long[(df_long['Gram_Staining'] == 'negative') & (df_long['Antibiotic'] == 'Penicillin')]['log(Minimum Inhibitory Concentration (MIC))']), '⬅', 'Penicillin has a substantially lower log(MIC), indicating higer effectiness than other antibiotics'),
-    ('positive','Neomycin', np.median(df_long[(df_long['Gram_Staining'] == 'positive') & (df_long['Antibiotic'] == 'Neomycin')]['log(Minimum Inhibitory Concentration (MIC))']), '⬅', 'Neomycin has a substantially lower log(MIC), indicating higer effectiness than other antibiotics'),
-]
+# # Creating annotations for boxplot
+# # creating dataframe for annotations
+# annotations = [
+#     ('negative','Penicillin', np.median(df_long[(df_long['Gram_Staining'] == 'negative') & (df_long['Antibiotic'] == 'Penicillin')]['log(Minimum Inhibitory Concentration (MIC))']), '⬅', 'Penicillin has a substantially lower log(MIC), indicating higer effectiness than other antibiotics'),
+#     ('positive','Neomycin', np.median(df_long[(df_long['Gram_Staining'] == 'positive') & (df_long['Antibiotic'] == 'Neomycin')]['log(Minimum Inhibitory Concentration (MIC))']), '⬅', 'Neomycin has a substantially lower log(MIC), indicating higer effectiness than other antibiotics'),
+# ]
+# # Creating a DataFrame for annotations
+# annotations_df = pd.DataFrame(annotations, columns=['Gram_Staining', 'Antibiotic', 'log(Minimum Inhibitory Concentration (MIC))', 'annotation_icon', 'annotation_text'])
 
-# Creating a DataFrame for annotations
-annotations_df = pd.DataFrame(annotations, columns=['Gram_Staining', 'Antibiotic', 'log(Minimum Inhibitory Concentration (MIC))', 'annotation_icon', 'annotation_text'])
+# # Merge annotation data back into df_long
+# df_long_annotated = df_long.merge(
+#     annotations_df,
+#     on=["Gram_Staining", "Antibiotic"],
+#     how="left"  # Keep all rows, add annotation where available
+# )
 
-# Creating a DataFrame for annotations
+# # Mark whether annotation exists
+# df_long_annotated["has_annotation"] = df_long_annotated["annotation_icon"].notna()
 
-annotation_layer = alt.Chart(annotations_df).mark_text(
-    size=14, dx=-10, dy=-5, align='left'
-).encode(
-    x="Antibiotic:N",
-    y="log(Minimum Inhibitory Concentration (MIC)):Q",
-    text="annotation_icon",
-    tooltip="annotation_text",
-    color=alt.Color("Gram_Staining:N", scale=color_scale)
-)
+# base = alt.Chart(df_long_annotated).encode(
+#     x="Antibiotic:N",
+#     y="log(Minimum Inhibitory Concentration (MIC)):Q",
+#     color=alt.Color("Gram_Staining:N", scale=color_scale)
+# )
 
-# Combining the boxplot with annotations
-boxplot = boxplot_base + annotation_layer
+# boxplot = base.mark_boxplot().properties(width=300)
 
-# adding faceting to the boxplot
-boxplot = boxplot.facet(
-    column=alt.Column('Gram_Staining:N', title='Gram Staining'))
+# # Annotation Layer: Only show text where annotation exists
+# annotations = base.mark_text(
+#     size=14, dx=-10, dy=-5, align='left'
+# ).encode(
+#     text=alt.condition("datum.has_annotation", "annotation_icon:N", alt.value("")),
+#     tooltip="annotation_text:N"
+# )
+
+# # Layer first, then facet
+# layered = alt.layer(boxplot, annotations).facet(
+#     column=alt.Column("Gram_Staining:N", title="Gram Staining")
+# )
+
+# st.altair_chart(layered)
+
+
+# # Creating a DataFrame for annotations
+
+# annotation_layer = alt.Chart(annotations_df).mark_text(
+#     size=14, dx=-10, dy=-5, align='left'
+# ).encode(
+#     x="Antibiotic:N",
+#     y="log(Minimum Inhibitory Concentration (MIC)):Q",
+#     text="annotation_icon",
+#     tooltip="annotation_text",
+#     color=alt.Color("Gram_Staining:N", scale=color_scale)
+# )
+
+# # Combining the boxplot with annotations
+# boxplot = boxplot_base + annotation_layer
+
+# # adding faceting to the boxplot
+# boxplot = boxplot.facet(
+#     column=alt.Column('Gram_Staining:N', title='Gram Staining'))
 
 st.altair_chart(boxplot)
 # adding subtitle
 st.header("How do the aggregated results fare for each Genus?")
-st.subheader("Penicillin is effective against positive Gram Staining bateria across all genera")
+st.subheader("Penicillin is effective against :green[positive] Gram Staining bacteria across all genera")
 
 pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
@@ -220,7 +253,7 @@ pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
 st.altair_chart(pos_boxplot)
 
 
-st.subheader("Neomycin is effective against negative Gram Staining bateria across all genera")
+st.subheader("Neomycin is effective against :orange[negative] Gram Staining bacteria across all genera")
 neg_boxplot = alt.Chart(neg_df).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
     y=alt.Y('log(Minimum Inhibitory Concentration (MIC))'),
