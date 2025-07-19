@@ -163,7 +163,7 @@ neg_df = df_long[df_long['Gram_Staining'] == 'negative']
 # Adding active title
 st.title("Antibiotic Effectiveness in Bacteria")
 # adding subtitle
-st.subheader("_Penicillin_ works best with :green[positive] *Gram Staining bacteria, while Neomycin are more effective against :orange[negative] Gram Staining bacteria.")
+st.subheader("_Penicillin_ works best with :green[positive] *gram staining bacteria, while _Neomycin_ is more effective against :orange[negative] gram staining bacteria.")
 
 # Define a shared color scale
 color_scale = alt.Scale(domain=['negative','positive', ], range=["#ff9f0eff","#1fb47b"])
@@ -250,7 +250,7 @@ st.caption("**MIC is the lowest concentration of a chemical that prevents visibl
 
 # adding subtitle
 st.header("How do the aggregated results fare in each Genus?")
-st.subheader("_Penicillin_ is most effective against :green[positive] Gram Staining Streptococcus and other genera.")
+st.subheader("_Penicillin_ is most effective against :green[positive] gram staining Streptococcus and other genera.")
 
 pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
@@ -263,7 +263,7 @@ pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
 st.altair_chart(pos_boxplot)
 
 
-st.subheader("_Neomycin_ is effective against :orange[negative] Gram Staining bacteria across all genera")
+st.subheader("_Neomycin_ is effective against :orange[negative] gram staining bacteria across all genera")
 neg_boxplot = alt.Chart(neg_df).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
     y=alt.Y('log(Minimum Inhibitory Concentration (MIC))'),
