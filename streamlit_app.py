@@ -240,7 +240,7 @@ boxplot = alt.Chart(df_long).mark_boxplot().encode(
 st.altair_chart(boxplot)
 # adding subtitle
 st.header("How do the aggregated results fare for each Genus?")
-st.subheader("Penicillin is effective against :green[positive] Gram Staining bacteria across all genera")
+st.subheader("_Penicillin_ is most effective against :green[positive] Gram Staining Streptococcus and other genera.")
 
 pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
@@ -253,7 +253,7 @@ pos_boxplot = alt.Chart(pos_df).mark_boxplot().encode(
 st.altair_chart(pos_boxplot)
 
 
-st.subheader("Neomycin is effective against :orange[negative] Gram Staining bacteria across all genera")
+st.subheader("_Neomycin_ is effective against :orange[negative] Gram Staining bacteria across all genera")
 neg_boxplot = alt.Chart(neg_df).mark_boxplot().encode(
     x=alt.X("Antibiotic:N"),
     y=alt.Y('log(Minimum Inhibitory Concentration (MIC))'),
